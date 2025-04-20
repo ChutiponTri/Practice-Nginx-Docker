@@ -27,7 +27,9 @@ Type: A Name: app Value: <your-server-ip> Proxy status: Proxied (orange cloud)
 - **Private Key** (e.g., `origin-key.pem`)
 3. Place them on your server, e.g.:
 
-/etc/ssl/certs/cloudflare/origin-cert.pem /etc/ssl/certs/cloudflare/origin-key.pem
+/etc/ssl/certs/cloudflare/origin-cert.pem
+/etc/ssl/certs/cloudflare/origin-key.pem
+
 
 
 > 💡 These certs are only valid when traffic comes through Cloudflare.
