@@ -49,45 +49,45 @@ worker_connections 1024;
 }
 
 http {
-include /etc/nginx/mime.types;
-default_type application/octet-stream;
+  include /etc/nginx/mime.types;
+  default_type application/octet-stream;
 
-log_format main '$remote_addr - $remote_user [$time_local] "$request" '
+  log_format main '$remote_addr - $remote_user [$time_local] "$request" '
                '$status $body_bytes_sent "$http_referer" '
                '"$http_user_agent" "$http_x_forwarded_for"';
 
-access_log /var/log/nginx/access.log main;
+  access_log /var/log/nginx/access.log main;
 
-sendfile on;
-keepalive_timeout 65;
+  sendfile on;
+  keepalive_timeout 65;
 
-# HTTP to HTTPS Redirect
-server {
- listen 80;
- server_name app.housepitalcare.com;
+  # HTTP to HTTPS Redirect
+  server {
+    listen 80;
+    server_name app.housepitalcare.com;
 
- return 301 https://$host$request_uri;
-}
+     return 301 https://$host$request_uri;
+  }
 
-# HTTPS Server Block
-server {
- listen 443 ssl;
- server_name app.housepitalcare.com;
+  # HTTPS Server Block
+  server {
+   listen 443 ssl;
+   server_name app.housepitalcare.com;
+  
+   ssl_certificate     /etc/ssl/certs/cloudflare/origin-cert.pem;
+   ssl_certificate_key /etc/ssl/certs/cloudflare/origin-key.pem;
+  
+   ssl_protocols TLSv1.2 TLSv1.3;
+   ssl_ciphers HIGH:!aNULL:!MD5;
 
- ssl_certificate     /etc/ssl/certs/cloudflare/origin-cert.pem;
- ssl_certificate_key /etc/ssl/certs/cloudflare/origin-key.pem;
-
- ssl_protocols TLSv1.2 TLSv1.3;
- ssl_ciphers HIGH:!aNULL:!MD5;
-
- location / {
-   proxy_pass http://nextjs:3000;
-   proxy_set_header Host $host;
-   proxy_set_header X-Real-IP $remote_addr;
-   proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-   proxy_set_header X-Forwarded-Proto $scheme;
- }
-}
+    location / {
+     proxy_pass http://nextjs:3000;
+     proxy_set_header Host $host;
+     proxy_set_header X-Real-IP $remote_addr;
+     proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+     proxy_set_header X-Forwarded-Proto $scheme;
+    }
+  }
 }
 ```
 
